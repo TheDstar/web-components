@@ -1,30 +1,20 @@
 class SubscriptionContainer extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        this.render();
+    }
 
-        this.shadowRoot.innerHTML = `
-            <style>
-                :host {
-                    display: block;
-                    margin: 0;
-                    padding: 16px;
-                    background-color: #222;
-                    border-radius: 8px;
-                    color: #fff;
-                    font-family: Arial, sans-serif;
-                }
-
-                ::slotted(subscription-item) {
-                    margin-bottom: 8px;
-                }
-                
-                ::slotted(subscription-item:last-child) {
-                    margin-bottom: 0;
-                }
-            </style>
-            <slot></slot>
-        `;
+    render() {
+        this.style.display = 'flex';
+        this.style.flexDirection = 'column';
+        this.style.flexWrap = 'wrap';
+        this.style.justifyContent = 'center';
+        this.style.alignItems = 'center';
+        this.style.gap = '2rem';
+        this.style.margin = '0';
+        this.style.padding = '16px';
+        this.style.height = "max-content";
+        this.style.fontFamily = 'DM Sans, sans-serif';
     }
 }
 
