@@ -20,8 +20,8 @@ class SubscriptionItem extends HTMLElement {
 
         this.style.border = `solid 1px rgba(${color}, .5)`;
         this.style.backgroundColor = `rgba(${color}, .1)`;
-        this.style.width = "80dvw";
-        this.style.padding = "1rem";
+        this.style.width = "90dvw";
+        this.style.padding = ".75rem 1rem";
         this.style.borderRadius = "8px";
 
         this.innerHTML = `
