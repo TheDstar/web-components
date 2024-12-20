@@ -15,8 +15,9 @@ Le projet a été testé sur :
 ## 🎨 • Technologies CSS utilisées
 
 - ``has()``
-- Container Queries
 - Dynamic Viewport Units
+
+Plus d'informations dans la documentation du projet.
 
 ## 🔗 • Liens
 
