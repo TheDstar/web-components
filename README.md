@@ -17,6 +17,8 @@ Le projet a été testé sur :
 - ``has()``
 - Dynamic Viewport Units
 
+Plus d'informations dans la documentation du projet.
+
 ## 🔗 • Liens
 
 **Application web** : https://mperret.fr/subtracker (mobile-first)
