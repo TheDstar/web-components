@@ -2,22 +2,23 @@ class SubtrackerNavbar extends HTMLElement {
     constructor() {
         super();
         this.formVisible = false;
+        this.total = 0; // Initialise la variable total
         this.render();
         this.setupIndexedDB();
     }
 
     setupIndexedDB() {
-        const request = indexedDB.open('SubtrackerDB', 1);
+        const request = indexedDB.open("SubtrackerDB", 1); // Nom de la base confirmé
 
         request.onupgradeneeded = (event) => {
             const db = event.target.result;
-            if (!db.objectStoreNames.contains('subscriptions')) {
-                db.createObjectStore('subscriptions', { keyPath: 'id', autoIncrement: true });
+            if (!db.objectStoreNames.contains("subscriptions")) { // Table "subscriptions"
+                db.createObjectStore("subscriptions", { keyPath: "id", autoIncrement: true });
             }
         };
 
         request.onerror = () => {
-            console.error('Failed to open IndexedDB.');
+            console.error("Failed to open IndexedDB.");
         };
 
         this.dbPromise = new Promise((resolve, reject) => {
@@ -27,12 +28,44 @@ class SubtrackerNavbar extends HTMLElement {
     }
 
     saveToIndexedDB(data) {
+        console.log('Saving to IndexedDB:', data);  // Vérifie le contenu de 'data'
         this.dbPromise.then((db) => {
-            const transaction = db.transaction('subscriptions', 'readwrite');
-            const store = transaction.objectStore('subscriptions');
+            const transaction = db.transaction("subscriptions", "readwrite");
+            const store = transaction.objectStore("subscriptions");
             store.add(data);
-            transaction.oncomplete = () => console.log('Data saved to IndexedDB:', data);
-            transaction.onerror = (error) => console.error('Error saving to IndexedDB:', error);
+            transaction.oncomplete = () => {
+                console.log("Data saved to IndexedDB:", data);
+                this.updateSubscriptionContainer(); // Met à jour le total et l'affichage après ajout
+            };
+            transaction.onerror = (error) => console.error("Error saving to IndexedDB:", error);
+        });
+    }
+
+    updateSubscriptionContainer() {
+        this.dbPromise.then((db) => {
+            const transaction = db.transaction("subscriptions", "readonly");
+            const store = transaction.objectStore("subscriptions");
+            const request = store.getAll();
+    
+            request.onsuccess = () => {
+                const subscriptions = request.result;
+                console.log('Subscriptions retrieved:', subscriptions);  // Vérifie le contenu des abonnements
+                const container = document.querySelector("subscription-container");
+                if (container) {
+                    container.updateSubscriptions(subscriptions);
+                }
+
+                // Calcul du total
+                this.total = subscriptions.reduce((sum, sub) => {
+                    const price = parseFloat(sub.price) || 0;  // Assurez-vous que le prix est un nombre
+                    return sum + price;
+                }, 0);
+
+                // Mise à jour du total dans l'interface
+                this.render();  // Rerender pour afficher le nouveau total
+            };
+    
+            request.onerror = () => console.error("Error fetching data from IndexedDB.");
         });
     }
 
@@ -45,12 +78,18 @@ class SubtrackerNavbar extends HTMLElement {
         event.preventDefault();
         const formData = new FormData(event.target);
         const data = {
-            platform: formData.get('platform'),
-            price: formData.get('price'),
-            name: formData.get('name'),
+            name: formData.get("platform"),      // Nom du type (actuellement "Perso")
+            type: formData.get("name"),  // Nom de la plateforme (actuellement "Test 4")
+            price: formData.get("price"),
+            color: "#525252",
         };
         this.saveToIndexedDB(data);
         this.toggleForm();
+    
+        // Recharger la page après avoir enregistré les données
+        setTimeout(() => {
+            location.reload();  // Cela recharge la page
+        }, 100);  // Un petit délai pour s'assurer que l'enregistrement soit effectué avant de recharger
     }
 
     render() {
@@ -71,8 +110,12 @@ class SubtrackerNavbar extends HTMLElement {
 
         this.innerHTML = `
             <div>
-                <span>Total :</span>
-                <span style="font-weight: bold; font-size: 1.5rem;">0,00 €</span>
+                <a href="documentation.html" style="    color: white;
+    text-decoration: none;
+    background-color: #242424;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    margin-top: 1rem;">Voir la documentation</a>
             </div>
             <div style="background-color: rgb(113, 113, 113);
                 border-radius: 8px;
@@ -128,4 +171,4 @@ class SubtrackerNavbar extends HTMLElement {
     }
 }
 
-customElements.define('subtracker-navbar', SubtrackerNavbar);
+customElements.define("subtracker-navbar", SubtrackerNavbar);

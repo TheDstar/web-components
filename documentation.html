@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation Subtracker</title>
+    <link rel="stylesheet" href="documentation.css">
+</head>
+
+<body>
+    <a href="index.html">Revenir à l'application Subtracker</a>
+
+    <div class="section">
+        <h1>Documentation Subtracker</h1>
+    </div>
+
+    <div class="section">
+        <h2>Que fait Subtracker ?</h2>
+        <p>Bien que Subtracker soit une mini web-app permettant de suivre ses abonnements mensuels, elle permet avant
+            tout de <b></b>mettre en avant les dernières technologies avancées du langage CSS</b>, ainsi que certaines
+            technologies des <b>Web Components</b>.</p>
+    </div>
+
+    <hr>
+
+    <div class="section">
+        <h2>Web Components utilisés</h2>
+        <h3>➡️ Custom Elements</h3>
+        <p>En HTML, on déclare les éléments grâce à des balises "p", "div", ... mais il est également possible de créer
+        des <b>Custom Elements</b> grâce au JavaScript.</p>
+        <div class="info">
+            <h4>Exemple avec Subtracker</h4>
+            <p>D'habitude, sur le Web, nous crééons des conteneurs grâce à la balise "div". Or, sur Subtracker, les conteneurs sont créés grâce aux balises <b>< subscription-item ></b> <i>(sans espaces)</i>, et avec lesquelles on peut donner des attributs personnalisés comme la plateforme, le type, le prix ou pour certains services la couleur.<br><br>Cela permet ainsi de pouvoir <b>réutiliser</b> les blocs de code et permet aussi une architecture de code plus lisible et modulaire, idéal pour de grosses applications.</p>
+            <p><i>Fun fact : certains services de streaming, notamment les plus connus, possèdent leurs propres couleurs (Spotify, Netflix, etc...) 👀</i></p>
+        </div>
+
+        <h3>➡️ IndexedDB</h3>
+        <p>On peut penser qu'un navigateur Internet n'est juste là que pour afficher des pages Web, sans plus. En réalité, ils sont capables de beaucoup plus; et notamment une chose, assez peu visible : <b>une base de données intégrée au navigateur</b>.</p>
+        <div class="info">
+            <h4>Exemple avec Subtracker</h4>
+            <p>Subtracker n'a pas besoin d'être connecté à Internet pour fonctionner, puisque toutes les informations que vous stockez le sont... dans votre navigateur.<br><br>À partir du moment où vous appuyez sur le bouton "Valider" lors de la création d'un abonnement, <b>les informations données se retrouvent dans la base de données du navigateur</b>.<br><br>C'est idéal pour sécuriser des informations temporaires, bien que cela ne soit pas recommandé pour de grosses applications qui nécessitent de faire appel à des bases de données distantes.</p>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="section">
+        <h2>Technologies CSS utilisées</h2>
+        <h3>➡️ <code>:has()</code></h3>
+        <p>Le sélecteur <code>:has()</code> en CSS permet de sélectionner un élément qui contient un autre élément spécifique. Par exemple, <code>.parent:has(span)</code> sélectionne tous les éléments avec la classe <code>parent</code> qui contiennent un élément <code>span</code>. Cela permet de styliser les éléments en fonction de leur contenu (mais il peut aller plus loin, en fonction de la valeur d'un attribut par exemple).</p>
+        <div class="info">
+            <h4>Exemple avec Subtracker</h4>
+            <p>Sur Subtracker, l'épaisseur de bordure du conteneur va varier selon la "Price Value". Plus l'abonnement est cher, plus la Price Value est élevée et plus la bordure est épaisse (pour mettre en avant les plus coûteux).</p>
+            <p>L'élément "subscription-item" possède une règle CSS avec <code>:has()</code> qui fait changer l'épaisseur du conteneur en fonction de la valeur de la Price Value de l'élément enfant.</p>
+            <p>Exemple : <code>subscription-item:has(div[price-value="1"]) { ... }</code></p>
+            <p>La règle <code>:has()</code> va permettre au subscription-item de vérifier si elle a une div enfant et qui a pour attribut "price-value" égal à 1, 2 ou 3.</p>
+        </div>
+
+        <h3>➡️ Dynamic Viewport Units</h3>
+        <p>Les unités de viewport dynamiques (dynamic viewport units) sont des unités de mesure en CSS qui permettent de dimensionner des éléments en fonction de la taille de la fenêtre d'affichage (viewport). Elles sont utiles pour créer des mises en page réactives qui s'adaptent à différentes tailles d'écran, mais aussi à l'interface des navigateurs mobiles (où la barre peut se réduire ou s'agrandir, comme sur Safari).</p>
+        <div class="info">
+            <h4>Exemple avec Subtracker</h4>
+            <p>Sur Subtracker, les conteneurs "subscription-item" font la taille de "80vw", soit 80% de la largeur de la viewport actuelle. En redimensionnant la fenêtre du navigateur horizontalement, ces conteneurs vont s'adapter dynamiquement et garder ainsi une marge avec les bordures du viewport.</p>
+        </div>
+    </div>
+
+</body>
+
+</html>
